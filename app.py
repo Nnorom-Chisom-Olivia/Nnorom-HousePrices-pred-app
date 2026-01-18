@@ -5,21 +5,16 @@ import pandas as pd
 
 app = Flask(__name__)
 
-# Load trained RandomForest model
-# Recreate feature columns from training data
+# Load trained RandomForest model and the feature map once
 model = joblib.load("house_price_model.pkl")
 feature_columns = joblib.load("house_columns.joblib")
 
-@app.route('/')
+@app.route('/predict')
 def home():
     return render_template("index.html")
 
-@app.route('/', methods=['GET', 'POST'])
-def home():
-    if request.method == 'POST':
-        # ... Paste all your prediction logic here ...
-        return render_template("index.html", prediction=result)
-    return render_template("index.html")
+@app.route('/predict', methods=['POST'])
+def predict():
     try:
         # Get form inputs
         bedrooms = float(request.form['bedrooms'])
@@ -47,8 +42,10 @@ def home():
     except Exception as e:
         result = f"Error: {str(e)}"
 
+    # This 'prediction' variable matches your working local setup
     return render_template("index.html", prediction=result)
 
 if __name__ == "__main__":
+    # Use 0.0.0.0 and the PORT environment variable for Render
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port, debug=False)
