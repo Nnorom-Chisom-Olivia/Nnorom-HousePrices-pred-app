@@ -14,7 +14,7 @@ feature_columns = joblib.load("house_columns.joblib")
 def home():
     return render_template("index.html")
 
-@@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
         # ... Paste all your prediction logic here ...
