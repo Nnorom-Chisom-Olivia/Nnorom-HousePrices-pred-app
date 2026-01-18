@@ -14,8 +14,12 @@ feature_columns = joblib.load("house_columns.joblib")
 def home():
     return render_template("index.html")
 
-@app.route('/predict', methods=['POST'])
-def predict():
+@@app.route('/', methods=['GET', 'POST'])
+def home():
+    if request.method == 'POST':
+        # ... Paste all your prediction logic here ...
+        return render_template("index.html", prediction=result)
+    return render_template("index.html")
     try:
         # Get form inputs
         bedrooms = float(request.form['bedrooms'])
