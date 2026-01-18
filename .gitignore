@@ -1,0 +1,10 @@
+myenv/
+__pycache__/
+*.pyc
+.env
+train.csv
+*.png
+*.pkl
+*.joblib
+!house_price_model.pkl
+!house_columns.joblib

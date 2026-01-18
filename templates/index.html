@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>House Price Predictor</title>
+  <!-- Google Font for creative title -->
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #0c222a; /* sky green background */
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #d2c6c6;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .title-box {
+      background-color: #f2f3f4;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 48px;
+      color: #00C49A;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      color: #F4D03F;
+      margin-bottom: 20px;
+    }
+
+    form {
+      background-color: #f2f3f4;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    label {
+      font-size: 18px;
+      font-weight: bold;
+      display: block;
+      margin-bottom: 8px;
+      text-align: left;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      margin-bottom: 20px;
+      border: 2px solid #00C49A;
+      border-radius: 6px;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      font-size: 18px;
+      font-weight: bold;
+      background-color: #9591bd; /* sky-green accent */
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #FF6F61; /* coral hover effect */
+    }
+
+    .result-box {
+      margin-top: 30px;
+      background-color: #fff;
+      border: 2px solid #FF6F61;
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 600px;
+      width: 100%;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      font-size: 22px;
+      font-weight: bold;
+      color: #FF6F61;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="title-box">
+      <h1> House Price Predictor</h1>
+      <h2>Designed by Olivia </h2>
+    </div>
+
+    <form action="/predict" method="post">
+      <label>Number of Bedrooms:</label>
+      <input type="number" name="bedrooms" required>
+
+      <label>House Size (sq ft):</label>
+      <input type="number" name="size" required>
+
+      <label>Neighborhood:</label>
+      <select name="location" required>
+        <option value="">Select Neighborhood</option>
+        <option value="CollgCr">College Creek</option>
+        <option value="Veenker">Veenker</option>
+        <option value="Crawfor">Crawford</option>
+        <option value="NoRidge">Northridge</option>
+        <option value="Mitchel">Mitchel</option>
+        <option value="Somerst">Somerset</option>
+        <option value="NWAmes">Northwest Ames</option>
+        <option value="OldTown">Old Town</option>
+        <option value="BrkSide">Brookside</option>
+      </select>
+
+      <button type="submit">Predict Price</button>
+    </form>
+
+    {% if prediction %}
+      <div class="result-box">
+        Predicted Price: {{ prediction }}
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>
