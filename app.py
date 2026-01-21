@@ -5,47 +5,43 @@ import pandas as pd
 
 app = Flask(__name__)
 
-# Load trained RandomForest model and the feature map once
-model = joblib.load("house_price_model.pkl")
-feature_columns = joblib.load("house_columns.joblib")
+# Load trained model and feature list from the /model/ folder
+model = joblib.load("model/house_price_model.pkl")
+feature_columns = joblib.load("model/house_columns.joblib")
 
-# FIX 1: Change this back to '/' so the home page actually loads
 @app.route('/')
 def home():
     return render_template("index.html")
 
-# FIX 2: This handles the actual math when you click the button
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
-        # Get form inputs
-        bedrooms = float(request.form['bedrooms'])
-        size = float(request.form['size'])
-        neighborhood = request.form['location']
+        # 1. Grab the 6 inputs from the form
+        # We put them directly into a dictionary
+        input_dict = {
+            'OverallQual': int(request.form['OverallQual']),
+            'GrLivArea': float(request.form['GrLivArea']),
+            'TotalBsmtSF': float(request.form['TotalBsmtSF']),
+            'GarageCars': int(request.form['GarageCars']),
+            'FullBath': int(request.form['FullBath']),
+            'YearBuilt': int(request.form['YearBuilt'])
+        }
 
-        # Create empty input row with all features = 0
-        input_data = pd.DataFrame([[0]*len(feature_columns)], columns=feature_columns)
+        # 2. Convert dictionary to a DataFrame
+        input_df = pd.DataFrame([input_dict])
 
-        # Fill numeric features
-        if 'BedroomAbvGr' in input_data.columns:
-            input_data['BedroomAbvGr'] = bedrooms
-        if 'GrLivArea' in input_data.columns:
-            input_data['GrLivArea'] = size
+        # 3. Ensure the columns are in the exact same order as the model expects
+        input_df = input_df[feature_columns]
 
-        # Encode neighborhood
-        col_name = f"Neighborhood_{neighborhood}"
-        if col_name in input_data.columns:
-            input_data[col_name] = 1
-
-        # Predict
-        prediction = model.predict(input_data)[0]
+        # 4. Predict
+        prediction = model.predict(input_df)[0]
         result = f"${prediction:,.2f}"
 
     except Exception as e:
         result = f"Error: {str(e)}"
 
-    # This 'prediction' variable matches your index.html
-    return render_template("index.html", prediction=result)
+    # We use 'prediction_text' to match your index.html display logic
+    return render_template("index.html", prediction_text=f"Predicted House Price: {result}")
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

@@ -2,11 +2,10 @@
 <html>
 <head>
   <title>House Price Predictor</title>
-  <!-- Google Font for creative title -->
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
   <style>
     body {
-      background-color: #0c222a; /* sky green background */
+      background-color: #0c222a; /* Dark background */
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
@@ -40,7 +39,7 @@
     }
 
     h2 {
-      color: #F4D03F;
+      color: #333; /* Darker color for visibility on light grey */
       margin-bottom: 20px;
     }
 
@@ -51,24 +50,26 @@
       box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
       text-align: center;
       width: 100%;
-      max-width: 400px;
+      max-width: 450px;
+      color: #333; /* Form text color */
     }
 
     label {
-      font-size: 18px;
+      font-size: 14px;
       font-weight: bold;
       display: block;
-      margin-bottom: 8px;
+      margin-bottom: 5px;
       text-align: left;
     }
 
-    input, select {
+    input {
       width: 100%;
-      padding: 12px;
+      padding: 10px;
       font-size: 16px;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       border: 2px solid #00C49A;
       border-radius: 6px;
+      box-sizing: border-box; /* Ensures padding doesn't affect width */
     }
 
     button {
@@ -76,11 +77,12 @@
       padding: 15px;
       font-size: 18px;
       font-weight: bold;
-      background-color: #9591bd; /* sky-green accent */
+      background-color: #9591bd; 
       color: white;
       border: none;
       border-radius: 8px;
       cursor: pointer;
+      margin-top: 10px;
     }
 
     button:hover {
@@ -95,8 +97,7 @@
       padding: 20px;
       max-width: 600px;
       width: 100%;
-      word-wrap: break-word;
-      overflow-wrap: break-word;
+      text-align: center;
       font-size: 22px;
       font-weight: bold;
       color: #FF6F61;
@@ -112,32 +113,31 @@
     </div>
 
     <form action="/predict" method="POST">
-      <label>Number of Bedrooms:</label>
+      
+      <label>Overall Quality (1-10):</label>
+      <input type="number" name="OverallQual" min="1" max="10" placeholder="e.g. 7" required>
 
-      <input type="number" name="bedrooms" required>
-      <label>House Size (sq ft):</label>
-      <input type="number" name="size" required>
+      <label>Above Ground Living Area (Sq Ft):</label>
+      <input type="number" name="GrLivArea" placeholder="e.g. 1500" required>
 
-      <label>Neighborhood:</label>
-      <select name="location" required>
-        <option value="">Select Neighborhood</option>
-        <option value="CollgCr">College Creek</option>
-        <option value="Veenker">Veenker</option>
-        <option value="Crawfor">Crawford</option>
-        <option value="NoRidge">Northridge</option>
-        <option value="Mitchel">Mitchel</option>
-        <option value="Somerst">Somerset</option>
-        <option value="NWAmes">Northwest Ames</option>
-        <option value="OldTown">Old Town</option>
-        <option value="BrkSide">Brookside</option>
-      </select>
+      <label>Total Basement Area (Sq Ft):</label>
+      <input type="number" name="TotalBsmtSF" placeholder="e.g. 800" required>
+
+      <label>Garage Car Capacity:</label>
+      <input type="number" name="GarageCars" placeholder="e.g. 2" required>
+
+      <label>Number of Full Bathrooms:</label>
+      <input type="number" name="FullBath" placeholder="e.g. 2" required>
+
+      <label>Year Built:</label>
+      <input type="number" name="YearBuilt" placeholder="e.g. 2005" required>
 
       <button type="submit">Predict Price</button>
     </form>
 
-    {% if prediction %}
+    {% if prediction_text %}
       <div class="result-box">
-        Predicted Price: {{ prediction }}
+        {{ prediction_text }}
       </div>
     {% endif %}
   </div>
